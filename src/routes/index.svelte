@@ -1,5 +1,6 @@
 <script context="module">
 	import { useStoryblokApi } from '@storyblok/svelte';
+	import { getStoryblokBridge } from '../store';
 
 	export async function load() {
 		const storyblokApi = useStoryblokApi();
@@ -14,11 +15,12 @@
 
 <script>
 	import { StoryblokComponent } from '@storyblok/svelte';
-	import { getStoryblokBridge } from '../store';
 
 	export let initialStory;
 
 	let story = getStoryblokBridge(initialStory.id, initialStory);
+
+	let initiallyUndefinedStory = getStoryblokBridge(initialStory.id, undefined);
 
 	// onMount(async () => {
 	//   useStoryblokBridge(story.id, (newStory) => (story = newStory));
@@ -28,5 +30,8 @@
 <div>
 	{#if $story}
 		<StoryblokComponent blok={$story.content} />
+	{/if}
+	{#if $initiallyUndefinedStory}
+		<StoryblokComponent blok={$initiallyUndefinedStory.content} />
 	{/if}
 </div>
